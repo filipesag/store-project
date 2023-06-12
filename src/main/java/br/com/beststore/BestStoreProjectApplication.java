@@ -1,4 +1,4 @@
-package br.com.beststore.mainApp;
+package br.com.beststore;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

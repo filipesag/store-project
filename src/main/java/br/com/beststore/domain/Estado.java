@@ -1,14 +1,19 @@
 package br.com.beststore.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "categoria")
-public class Categoria implements Serializable {
+@Table(name = "estado")
+public class Estado implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -16,16 +21,12 @@ public class Categoria implements Serializable {
     private Integer id;
     private String nome;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "produto_categoria",
-            joinColumns = { @JoinColumn(name="id_categoria") },
-            inverseJoinColumns = { @JoinColumn(name="id_produto")})
-    private List<Produto> produtos = new ArrayList<>();
+    @OneToMany(mappedBy = "estado")
+    private List<Cidade> cidades = new ArrayList<>();
 
-    public Categoria(){}
+    public Estado(){}
 
-    public Categoria(String nome) {
+    public Estado(String nome) {
         this.nome = nome;
     }
 
@@ -45,14 +46,20 @@ public class Categoria implements Serializable {
         this.nome = nome;
     }
 
+    public java.util.List<Cidade> getCidades() {
+        return cidades;
+    }
+
+    public void setCidades(java.util.List<Cidade> cidades) {
+        this.cidades = cidades;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Categoria)) return false;
+        if (!(o instanceof Estado estado)) return false;
 
-        Categoria categoria = (Categoria) o;
-
-        return getId().equals(categoria.getId());
+        return getId().equals(estado.getId());
     }
 
     @Override

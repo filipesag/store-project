@@ -1,13 +1,11 @@
 package br.com.beststore.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,9 +19,11 @@ public class Produto implements Serializable {
     private String nome;
     private Double preco;
 
-/*    @ManyToMany(mappedBy = "podutos")
-    Set<Categoria> categorias = new HashSet<>();*/
+    @ManyToMany(mappedBy = "produtos")
+    private List<Categoria> categorias = new ArrayList<>();
 
+    @OneToMany(mappedBy = "id.produto")
+    private Set<ItemPedido> itens = new HashSet<>();
 
     public Produto(){
     }
@@ -31,6 +31,14 @@ public class Produto implements Serializable {
     public Produto(String nome, Double preco) {
         this.nome = nome;
         this.preco = preco;
+    }
+
+    public List<Pedido> getPedidos(){
+        List<Pedido> pedidos = new ArrayList<>();
+        for(ItemPedido item : itens){
+            pedidos.add(item.getPedido());
+        }
+        return pedidos;
     }
 
 
@@ -56,6 +64,14 @@ public class Produto implements Serializable {
 
     public void setPreco(Double preco) {
         this.preco = preco;
+    }
+
+    public Set<ItemPedido> getItens() {
+        return itens;
+    }
+
+    public void setItens(Set<ItemPedido> itens) {
+        this.itens = itens;
     }
 
     @Override
