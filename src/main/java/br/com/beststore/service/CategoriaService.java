@@ -17,4 +17,24 @@ public class CategoriaService {
         Optional<Categoria> cat = repository.findById(id);
         return cat.get();
     }
+
+    public Categoria inserirNovaCategoria(Categoria cat) {
+        return repository.save(cat);
+    }
+
+    public Categoria atualizarCategoria(Integer id, Categoria cat) {
+        Categoria cat2 = repository.getReferenceById(id);
+        atualizarDados(cat2, cat);
+        return repository.save(cat);
+    }
+
+    public void deletarCategoria(Integer id){
+        repository.deleteById(id);
+    }
+
+    public void atualizarDados(Categoria cat, Categoria cat2){
+        cat.setNome(cat2.getNome());
+    }
+
+
 }
