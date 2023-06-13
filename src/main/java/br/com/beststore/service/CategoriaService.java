@@ -3,8 +3,12 @@ package br.com.beststore.service;
 import br.com.beststore.domain.Categoria;
 import br.com.beststore.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,6 +20,10 @@ public class CategoriaService {
     public Categoria buscar(Integer id) {
         Optional<Categoria> cat = repository.findById(id);
         return cat.get();
+    }
+
+    public List<Categoria> buscarTodasCategorias(){
+        return repository.findAll();
     }
 
     public Categoria inserirNovaCategoria(Categoria cat) {
@@ -36,5 +44,9 @@ public class CategoriaService {
         cat.setNome(cat2.getNome());
     }
 
+    public Page<Categoria> encontrarPagina(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+        return repository.findAll(pageRequest);
+    }
 
 }

@@ -1,13 +1,17 @@
 package br.com.beststore.controller;
 
 import br.com.beststore.domain.Categoria;
+import br.com.beststore.dto.CategoriaDTO;
 import br.com.beststore.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/categorias")
@@ -20,6 +24,23 @@ public class CategoriaController {
     public ResponseEntity<Categoria> buscaPorId(@PathVariable Integer id) {
         Categoria cat = service.buscar(id);
         return ResponseEntity.ok().body(cat);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CategoriaDTO>> buscarTodasCategorias(){
+        List<Categoria> catList = service.buscarTodasCategorias();
+        List<CategoriaDTO> list = catList.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping(value = "/page")
+    public ResponseEntity<Page<CategoriaDTO>> buscarPagina(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                           @RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
+                                                           @RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
+                                                           @RequestParam (value = "direction", defaultValue = "ASC")String direction){
+        Page<Categoria> catList = service.encontrarPagina(page, linesPerPage, orderBy, direction);
+        Page<CategoriaDTO> list = catList.map(obj -> new CategoriaDTO(obj));
+        return ResponseEntity.ok().body(list);
     }
 
     @PostMapping
