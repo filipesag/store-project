@@ -1,5 +1,6 @@
 package br.com.beststore.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -22,17 +23,20 @@ public class Produto implements Serializable {
     @ManyToMany(mappedBy = "produtos")
     private List<Categoria> categorias = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "id.produto")
     private Set<ItemPedido> itens = new HashSet<>();
 
     public Produto(){
     }
 
-    public Produto(String nome, Double preco) {
+    public Produto(Integer id,String nome, Double preco) {
+        this.id = id;
         this.nome = nome;
         this.preco = preco;
     }
 
+    @JsonIgnore
     public List<Pedido> getPedidos(){
         List<Pedido> pedidos = new ArrayList<>();
         for(ItemPedido item : itens){
@@ -40,7 +44,6 @@ public class Produto implements Serializable {
         }
         return pedidos;
     }
-
 
     public Integer getId() {
         return id;
@@ -73,6 +76,15 @@ public class Produto implements Serializable {
     public void setItens(Set<ItemPedido> itens) {
         this.itens = itens;
     }
+
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<Categoria> categorias) {
+        this.categorias = categorias;
+    }
+
 
     @Override
     public boolean equals(Object o) {

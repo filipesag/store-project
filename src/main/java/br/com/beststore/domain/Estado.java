@@ -1,5 +1,6 @@
 package br.com.beststore.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,12 +22,14 @@ public class Estado implements Serializable {
     private Integer id;
     private String nome;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "estado")
     private List<Cidade> cidades = new ArrayList<>();
 
     public Estado(){}
 
-    public Estado(String nome) {
+    public Estado(Integer id,String nome) {
+        this.id = id;
         this.nome = nome;
     }
 
@@ -46,11 +49,11 @@ public class Estado implements Serializable {
         this.nome = nome;
     }
 
-    public java.util.List<Cidade> getCidades() {
+    public List<Cidade> getCidades() {
         return cidades;
     }
 
-    public void setCidades(java.util.List<Cidade> cidades) {
+    public void setCidades(List<Cidade> cidades) {
         this.cidades = cidades;
     }
 

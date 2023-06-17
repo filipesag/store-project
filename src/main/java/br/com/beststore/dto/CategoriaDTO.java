@@ -1,11 +1,17 @@
 package br.com.beststore.dto;
 
 import br.com.beststore.domain.Categoria;
+import jakarta.validation.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Length;
 
-public class CategoriaDTO implements java.io.Serializable {
+import java.io.Serializable;
+
+public class CategoriaDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer id;
+    @NotEmpty(message = "Preenchimento do nome da categoria deve ser obrigatório.")
+    @Length(min = 5, max = 80, message = "O tamanho deve ser entre 5 a 80 caracteres.")
     private String nome;
 
     public CategoriaDTO(){}

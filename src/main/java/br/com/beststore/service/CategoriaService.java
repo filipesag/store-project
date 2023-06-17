@@ -1,6 +1,7 @@
 package br.com.beststore.service;
 
 import br.com.beststore.domain.Categoria;
+import br.com.beststore.dto.CategoriaDTO;
 import br.com.beststore.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,6 +48,10 @@ public class CategoriaService {
     public Page<Categoria> encontrarPagina(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
         return repository.findAll(pageRequest);
+    }
+
+    public Categoria fromDTO(CategoriaDTO catDto) {
+        return new Categoria(catDto.getId(), catDto.getNome());
     }
 
 }

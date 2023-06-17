@@ -3,6 +3,7 @@ package br.com.beststore.controller;
 import br.com.beststore.domain.Categoria;
 import br.com.beststore.dto.CategoriaDTO;
 import br.com.beststore.service.CategoriaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -44,14 +45,16 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity<Categoria> inserirNovaCategoria(@RequestBody Categoria cat){
+    public ResponseEntity<Categoria> inserirNovaCategoria(@Valid @RequestBody CategoriaDTO catDto){
+        Categoria cat = service.fromDTO(catDto);
         cat = service.inserirNovaCategoria(cat);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cat.getId()).toUri();
         return ResponseEntity.created(uri).body(cat);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Categoria> atualizarCategoria(@PathVariable Integer id,@RequestBody Categoria cat) {
+    public ResponseEntity<Categoria> atualizarCategoria(@Valid @PathVariable Integer id,@RequestBody CategoriaDTO catDto) {
+        Categoria cat = service.fromDTO(catDto);
         cat = service.atualizarCategoria(id, cat);
         return ResponseEntity.ok().body(cat);
     }

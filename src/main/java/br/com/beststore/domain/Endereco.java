@@ -1,5 +1,6 @@
 package br.com.beststore.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +25,7 @@ public class Endereco implements Serializable {
     private String bairro;
     private String cep;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
@@ -34,13 +36,15 @@ public class Endereco implements Serializable {
 
     public Endereco(){}
 
-    public Endereco(String logradouro, String numero, String complemento, String bairro, String cep, Cidade cidade) {
+    public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep,Cliente cliente, Cidade cidade) {
+        this.id = id;
         this.logradouro = logradouro;
         this.numero = numero;
         this.complemento = complemento;
         this.bairro = bairro;
         this.cep = cep;
         this.cidade = cidade;
+        this.cliente = cliente;
     }
 
     public Integer getId() {

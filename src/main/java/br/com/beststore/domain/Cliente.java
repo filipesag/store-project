@@ -1,6 +1,8 @@
 package br.com.beststore.domain;
 
 import br.com.beststore.domain.enums.TipoCliente;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -30,10 +32,11 @@ public class Cliente implements Serializable {
     private Integer numeroDePedidos;
     private Integer tipo;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Endereco> enderecos = new ArrayList<>();
 
     @ElementCollection
@@ -44,12 +47,12 @@ public class Cliente implements Serializable {
     public Cliente() {
     }
 
-    public Cliente(String nome, String email, String cpfOuCnpj, Integer numeroDePedidos, TipoCliente tipo) {
+    public Cliente(Integer id, String nome, String email, String cpfOuCnpj, Integer numeroDePedidos, TipoCliente tipo) {
         this.nome = nome;
         this.email = email;
         this.cpfOuCnpj = cpfOuCnpj;
-        this.numeroDePedidos = 0;
-        this.tipo = tipo.getCod();
+        this.numeroDePedidos = null;
+        this.tipo = (tipo == null)? null : tipo.getCod();
     }
 
     public Integer getId() {

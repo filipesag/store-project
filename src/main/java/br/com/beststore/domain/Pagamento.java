@@ -1,6 +1,7 @@
 package br.com.beststore.domain;
 
 import br.com.beststore.domain.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,8 +22,9 @@ public class Pagamento implements Serializable {
 
     @Id
     private Integer id;
-    private EstadoPagamento estado;
+    private Integer estado;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "id_pedido")
     @MapsId
@@ -32,7 +34,7 @@ public class Pagamento implements Serializable {
 
     public Pagamento(Integer id, EstadoPagamento estado, Pedido pedido) {
         this.id = id;
-        this.estado = estado;
+        this.estado = (estado == null) ? null : estado.getCod();
         this.pedido = pedido;
     }
 
@@ -44,11 +46,11 @@ public class Pagamento implements Serializable {
         this.id = id;
     }
 
-    public EstadoPagamento getEstado() {
+    public Integer getEstado() {
         return estado;
     }
 
-    public void setEstado(EstadoPagamento estado) {
+    public void setEstado(Integer estado) {
         this.estado = estado;
     }
 
