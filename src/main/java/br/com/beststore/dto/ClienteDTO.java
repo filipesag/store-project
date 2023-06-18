@@ -1,11 +1,13 @@
 package br.com.beststore.dto;
 
 import br.com.beststore.domain.Cliente;
+import br.com.beststore.service.validation.ClientInsert;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import java.io.Serializable;
+
 
 public class ClienteDTO implements Serializable {
     private static final long serialVersionUID = 1L;
